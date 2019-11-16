@@ -24,6 +24,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
+import static com.avs.sendme.Values.NOTIFICATION_ID;
+
 public class SendMeFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String JSON_KEY_AUTHOR = SendMeContract.COLUMN_AUTHOR;
@@ -118,7 +120,7 @@ public class SendMeFirebaseMessagingService extends FirebaseMessagingService {
 
         if (notificationManager != null) {
             Log.d(LOG_TAG, "author: " + author);
-            notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+            notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
         }
     }
 }
