@@ -22,15 +22,14 @@ import com.avs.sendme.following.FollowingPreferenceActivity;
 import com.avs.sendme.provider.SendMeContract;
 import com.avs.sendme.provider.SendMeProvider;
 
-public class MainActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static String LOG_TAG = MainActivity.class.getSimpleName();
     private static final int LOADER_ID_MESSAGES = 0;
 
-    RecyclerView mRecyclerView;
-    LinearLayoutManager mLayoutManager;
-    SendMeAdapter mAdapter;
+    RecyclerView recyclerView;
+    LinearLayoutManager layoutManager;
+    SendMeAdapter adapter;
 
     static final String[] MESSAGES_PROJECTION = {
             SendMeContract.COLUMN_AUTHOR,
@@ -50,25 +49,25 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mRecyclerView = findViewById(R.id.squawks_recycler_view);
+        recyclerView = findViewById(R.id.squawks_recycler_view);
 
         // Use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
 
         // Use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
         // Add dividers
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
-                mRecyclerView.getContext(),
-                mLayoutManager.getOrientation());
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
+                recyclerView.getContext(),
+                layoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
         // Specify an adapter
-        mAdapter = new SendMeAdapter();
-        mRecyclerView.setAdapter(mAdapter);
+        adapter = new SendMeAdapter();
+        recyclerView.setAdapter(adapter);
 
         // Start the loader
         LoaderManager.getInstance(this).initLoader(LOADER_ID_MESSAGES, null, this);
@@ -110,11 +109,11 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mAdapter.swapCursor(data);
+        adapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mAdapter.swapCursor(null);
+        adapter.swapCursor(null);
     }
 }

@@ -14,12 +14,13 @@ import com.avs.sendme.provider.SendMeContract;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class SendMeAdapter extends RecyclerView.Adapter<SendMeAdapter.SendMeViewHolder> {
 
 
-    private Cursor mData;
-    private static SimpleDateFormat sDateFormat = new SimpleDateFormat("dd MMM");
+    private Cursor data;
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM", Locale.getDefault());
 
 
     private static final long MINUTE_MILLIS = 1000 * 60;
@@ -32,21 +33,20 @@ public class SendMeAdapter extends RecyclerView.Adapter<SendMeAdapter.SendMeView
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_sendme_list, parent, false);
 
-        SendMeViewHolder vh = new SendMeViewHolder(v);
-        return vh;
+        return new SendMeViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(SendMeViewHolder holder, int position) {
-        mData.moveToPosition(position);
+        data.moveToPosition(position);
 
-        String message = mData.getString(MainActivity.COL_NUM_MESSAGE);
-        String author = mData.getString(MainActivity.COL_NUM_AUTHOR);
-        String authorKey = mData.getString(MainActivity.COL_NUM_AUTHOR_KEY);
+        String message = data.getString(MainActivity.COL_NUM_MESSAGE);
+        String author = data.getString(MainActivity.COL_NUM_AUTHOR);
+        String authorKey = data.getString(MainActivity.COL_NUM_AUTHOR_KEY);
 
         // Get the date for displaying
-        long dateMillis = mData.getLong(MainActivity.COL_NUM_DATE);
-        String date = "";
+        long dateMillis = data.getLong(MainActivity.COL_NUM_DATE);
+        String date;
         long now = System.currentTimeMillis();
 
         // Change how the date is displayed depending on whether it was written in the last minute,
@@ -61,7 +61,7 @@ public class SendMeAdapter extends RecyclerView.Adapter<SendMeAdapter.SendMeView
             }
         } else {
             Date dateDate = new Date(dateMillis);
-            date = sDateFormat.format(dateDate);
+            date = dateFormat.format(dateDate);
         }
 
         // Add a dot to the date string
@@ -96,12 +96,12 @@ public class SendMeAdapter extends RecyclerView.Adapter<SendMeAdapter.SendMeView
 
     @Override
     public int getItemCount() {
-        if (null == mData) return 0;
-        return mData.getCount();
+        if (null == data) return 0;
+        return data.getCount();
     }
 
     public void swapCursor(Cursor newCursor) {
-        mData = newCursor;
+        data = newCursor;
         notifyDataSetChanged();
     }
 
