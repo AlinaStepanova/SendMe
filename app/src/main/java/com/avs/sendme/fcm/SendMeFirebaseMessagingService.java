@@ -76,7 +76,7 @@ public class SendMeFirebaseMessagingService extends FirebaseMessagingService {
                 newMessage.put(SendMeContract.COLUMN_MESSAGE, data.get(JSON_KEY_MESSAGE).trim());
                 newMessage.put(SendMeContract.COLUMN_DATE, data.get(JSON_KEY_DATE));
                 newMessage.put(SendMeContract.COLUMN_AUTHOR_KEY, data.get(JSON_KEY_AUTHOR_KEY));
-                getContentResolver().insert(SendMeProvider.SquawkMessages.CONTENT_URI, newMessage);
+                getContentResolver().insert(SendMeProvider.SendMeMessages.CONTENT_URI, newMessage);
                 return null;
             }
         };

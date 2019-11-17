@@ -15,7 +15,7 @@ public final class SendMeProvider {
 
 
     @TableEndpoint(table = SendMeDatabase.SEND_ME_MESSAGES)
-    public static class SquawkMessages {
+    public static class SendMeMessages {
 
         @ContentUri(
                 path = "messages",

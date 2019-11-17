@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         String selection = SendMeContract.createSelectionForCurrentFollowers(
                 PreferenceManager.getDefaultSharedPreferences(this));
         Log.d(LOG_TAG, "Selection is " + selection);
-        return new CursorLoader(this, SendMeProvider.SquawkMessages.CONTENT_URI,
+        return new CursorLoader(this, SendMeProvider.SendMeMessages.CONTENT_URI,
                 MESSAGES_PROJECTION, selection, null, SendMeContract.COLUMN_DATE + " DESC");
     }
 
