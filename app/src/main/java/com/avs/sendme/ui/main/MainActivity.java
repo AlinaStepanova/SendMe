@@ -1,4 +1,4 @@
-package com.avs.sendme.main;
+package com.avs.sendme.ui.main;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.avs.sendme.R;
-import com.avs.sendme.following.FollowingPreferenceActivity;
+import com.avs.sendme.ui.preference.FollowingPreferenceActivity;
 import com.avs.sendme.provider.SendMeContract;
 import com.avs.sendme.provider.SendMeProvider;
 

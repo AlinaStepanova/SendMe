@@ -13,7 +13,7 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 
 import com.avs.sendme.Values;
-import com.avs.sendme.main.MainActivity;
+import com.avs.sendme.ui.main.MainActivity;
 import com.avs.sendme.R;
 import com.avs.sendme.provider.SendMeContract;
 import com.avs.sendme.provider.SendMeProvider;

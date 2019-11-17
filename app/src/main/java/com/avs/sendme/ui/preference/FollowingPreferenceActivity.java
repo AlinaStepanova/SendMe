@@ -1,4 +1,4 @@
-package com.avs.sendme.following;
+package com.avs.sendme.ui.preference;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;

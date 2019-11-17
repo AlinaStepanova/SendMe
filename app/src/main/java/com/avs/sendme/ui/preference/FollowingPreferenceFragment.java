@@ -1,4 +1,4 @@
-package com.avs.sendme.following;
+package com.avs.sendme.ui.preference;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
