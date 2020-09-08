@@ -23,4 +23,14 @@ public final class SendMeProvider {
                 defaultSort = SendMeContract.COLUMN_DATE + " DESC")
         public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/messages");
     }
+
+    @TableEndpoint(table = SendMeDatabase.SEND_ME_TEST)
+    public static class SendMeTest {
+
+        @ContentUri(
+                path = "test",
+                type = "vnd.android.cursor.dir/test",
+                defaultSort = SendMeContractTest.COLUMN_ID + " DESC")
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/test");
+    }
 }

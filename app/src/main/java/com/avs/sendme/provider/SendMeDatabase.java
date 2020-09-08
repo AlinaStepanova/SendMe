@@ -11,4 +11,7 @@ public class SendMeDatabase {
     @Table(SendMeContract.class)
     public static final String SEND_ME_MESSAGES = "send_me_messages";
 
+    @Table(SendMeContractTest.class)
+    public static final String SEND_ME_TEST = "send_me_test";
+
 }

@@ -13,6 +13,7 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 
 import com.avs.sendme.Values;
+import com.avs.sendme.provider.SendMeContractTest;
 import com.avs.sendme.ui.main.MainActivity;
 import com.avs.sendme.R;
 import com.avs.sendme.provider.SendMeContract;
@@ -60,7 +61,7 @@ public class SendMeFirebaseMessagingService extends FirebaseMessagingService {
             // Send a notification that you got a new message
             sendNotification(data);
             insertMessage(data);
-
+            insertTest();
         }
     }
 
@@ -82,6 +83,23 @@ public class SendMeFirebaseMessagingService extends FirebaseMessagingService {
         };
 
         insertSquawkTask.execute();
+    }
+
+    private void insertTest() {
+
+        // Database operations should not be done on the main thread
+        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                ContentValues newMessage = new ContentValues();
+                newMessage.put(SendMeContractTest.COLUMN_TITLE, "Test");
+                newMessage.put(SendMeContractTest.COLUMN_CONNECTED_KEY, 1);
+                getContentResolver().insert(SendMeProvider.SendMeTest.CONTENT_URI, newMessage);
+                return null;
+            }
+        };
+        task.execute();
     }
 
 

@@ -1,7 +1,9 @@
 package com.avs.sendme.ui.main;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,14 +20,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.avs.sendme.R;
+import com.avs.sendme.provider.SendMeContractTest;
 import com.avs.sendme.ui.preference.FollowingPreferenceActivity;
 import com.avs.sendme.provider.SendMeContract;
 import com.avs.sendme.provider.SendMeProvider;
+
+import static com.avs.sendme.provider.SendMeContractTest.COLUMN_CONNECTED_KEY;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static String LOG_TAG = MainActivity.class.getSimpleName();
     private static final int LOADER_ID_MESSAGES = 0;
+    private static final int LOADER_TEST = 1;
 
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
@@ -35,13 +41,22 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             SendMeContract.COLUMN_AUTHOR,
             SendMeContract.COLUMN_MESSAGE,
             SendMeContract.COLUMN_DATE,
-            SendMeContract.COLUMN_AUTHOR_KEY
+            SendMeContract.COLUMN_AUTHOR_KEY,
+            SendMeContract.COLUMN_ID
+    };
+
+    static final String[] TEST_PROJECTION = {
+            SendMeContractTest.COLUMN_TITLE,
+            SendMeContractTest.COLUMN_CONNECTED_KEY
     };
 
     static final int COL_NUM_AUTHOR = 0;
     static final int COL_NUM_MESSAGE = 1;
     static final int COL_NUM_DATE = 2;
     static final int COL_NUM_AUTHOR_KEY = 3;
+    static final int COL_ID_KEY = 4;
+
+    static final int COL_TEST_TITLE = 0;
 
 
     @Override
@@ -71,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         // Start the loader
         LoaderManager.getInstance(this).initLoader(LOADER_ID_MESSAGES, null, this);
+        LoaderManager.getInstance(this).initLoader(LOADER_TEST, null, this);
     }
 
     @Override
@@ -99,17 +115,38 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        // This method generates a selection off of only the current followers
-        String selection = SendMeContract.createSelectionForCurrentFollowers(
-                PreferenceManager.getDefaultSharedPreferences(this));
-        Log.d(LOG_TAG, "Selection is " + selection);
-        return new CursorLoader(this, SendMeProvider.SendMeMessages.CONTENT_URI,
-                MESSAGES_PROJECTION, selection, null, SendMeContract.COLUMN_DATE + " DESC");
+        CursorLoader loader = new CursorLoader(this);
+        switch (id) {
+            case LOADER_ID_MESSAGES: {
+                String selection = SendMeContract.createSelectionForCurrentFollowers(
+                        PreferenceManager.getDefaultSharedPreferences(this));
+                Log.d(LOG_TAG, "Selection is " + selection);
+                loader = new CursorLoader(this, SendMeProvider.SendMeMessages.CONTENT_URI,
+                        MESSAGES_PROJECTION, selection, null, SendMeContract.COLUMN_DATE + " DESC");
+                break;
+            }
+            case LOADER_TEST: {
+                loader = new CursorLoader(this, SendMeProvider.SendMeTest.CONTENT_URI,
+                        TEST_PROJECTION, null, null, SendMeContractTest.COLUMN_ID + " DESC");
+                break;
+            }
+        }
+        return loader;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        adapter.swapCursor(data);
+        switch (loader.getId()) {
+            case LOADER_ID_MESSAGES: {
+                adapter.swapCursor(data);
+                break;
+            }
+            case LOADER_TEST: {
+                data.moveToFirst();
+                Log.d(LOG_TAG, data.getString(COL_TEST_TITLE));
+                break;
+            }
+        }
     }
 
     @Override
